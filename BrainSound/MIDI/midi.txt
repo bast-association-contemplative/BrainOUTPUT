@@ -1,0 +1,34 @@
+	/************************************/
+	
+		import themidibus.*; //Import the library
+		MidiBus OpenBciBus; // The MidiBus
+		
+	/********BUS MIDI*************/
+	
+		OpenBciBus = new MidiBus(this, -1, "Bus 1");
+		
+	/*******PUBLIC FUNCTINO*******/
+	
+		void garageband(int channel, int pitch, int velocity, int delay) {
+		  OpenBciBus.sendNoteOn(channel, pitch, velocity); // Send a Midi noteOn
+		  delayMIDI(delay);
+		  OpenBciBus.sendNoteOff(channel, pitch, velocity); // Send a Midi noteOff
+		}
+		
+		void delayMIDI(int time) {
+		  int current = millis();
+		   while (millis () < current+time) Thread.yield();
+		}
+
+	/************************************/
+    //This function is use in EEG_Processing.pde
+	    
+        int delaynote;
+        	delaynote = int ( detectedPeak[Ichan].SNR_dB * 10 );
+        
+		int note;
+        	note = int ( detectedPeak[Ichan].rms_uV_perBin * 1000 );
+
+        garageband(0,note,127,delaynote);
+        
+	/************************************/
